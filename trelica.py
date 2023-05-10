@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
+ 
+os.system('cls')
 
 #VETORES DECLARADOS DAS TABELAS
 coordenadax = []
@@ -10,17 +13,25 @@ forcay = []
 barra1 = []
 barra2 = []
 
+#INICIO DO PROGRAMA
+print("                                                 Seja bem-vindo(a) ao nosso Programa de Cálculo Estrutural.")
+print("           Para facilitar a execução do programa, imagine o sistema de treliças em forma de coordenadas cartesianas. Os eixos X e Y estão na escala de metros.")
+print("                                                             As forças estão na escala de 'kN'")
+print("                                                             Presione 'enter' para prosseguir!\n")
+inicio=input("                                                                             ")
+os.system('cls')
+
 #ENTRADA DAS COORDENADAS DOS NÓS E FORÇAS APLICADAS EXTERNAS NA TRELIÇA
-n = int(input('Quantos nos tera na trelica? :'))
+n = int(input('Quantos nós a trelica terá?: '))
 
 for i in range(n):
-  x = int(input('Insira a Coordenada X do No:'))
+  x = int(input('Insira a Coordenada X do Nó: '))
   coordenadax.append(x)
-  y = int(input('Insira a Coordenada Y do No:'))
+  y = int(input('Insira a Coordenada Y do Nó: '))
   coordenaday.append(y)
-  fx = int(input('Insira a forca aplicada em FX neste no:'))
+  fx = int(input('Insira a forca aplicada em FX neste Nó: '))
   forcax.append(fx)
-  fy = int(input('Insira a forca aplicada em FY neste no:'))
+  fy = int(input('Insira a forca aplicada em FY neste Nó: '))
   forcay.append(fy)
 
 tabelanos = pd.DataFrame({'X': coordenadax, 'Y': coordenaday, 'FX': forcax, 'FY': forcay})
@@ -28,16 +39,16 @@ tabelanos.index += 1
 print(tabelanos)
 
 #ENTRADA DAS BARRAS DA TRELIÇA (QUAIS NÓS SE LIGAM ENTRE SI)
-print('Quais nos estarao interligados entre si? ')
+print('Quais nós estarão interligados entre si? ')
 continuar = True
 #simulando um do-while
 while continuar:
-    x1 = int(input('Insira o Primeiro No a ser ligado'))
+    x1 = int(input('Insira o Primeiro Nó a ser ligado: '))
     barra1.append(x1)
-    y1 = int(input('Insira o Segundo No a ser ligado'))
+    y1 = int(input('Insira o Segundo Nó a ser ligado: '))
     barra2.append(y1)
 
-    resposta = input("Deseja continuar? (S/N) ")
+    resposta = input("Deseja continuar? (S/N): ")
     if resposta.lower() != "s":
         continuar = False
 
@@ -55,6 +66,7 @@ print(tabelabarras)
 
 
 #PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA
+plt.figure(1, figsize=(12,4.5))
 for barra in tabelabarras.index:
   N1, N2 = tabelabarras.loc[barra, ['N1', 'N2']]
   x2, y2 = tabelanos.loc[N1, ['X', 'Y']]
@@ -62,8 +74,27 @@ for barra in tabelabarras.index:
 
   X = np.array([x2, x3])
   Y = np.array([y2, y3])
-  print(X)
-  print(Y)
-  plt.plot(X, Y)
+  plt.plot(X, Y, color='black')
 
+#IMPORTANDO DADOS DOS NÓS NO GRÁFICO
+for no in tabelanos.index:
+   X, Y, FX, FY = tabelanos.loc[no]
+
+   plt.scatter(X, Y, s=50, color='blue', marker="o") #exibe os nós no grafico
+
+   if FX > 0:
+      plt.arrow(X - 1.50,  Y, 1, 0, color='red', width=0.05)
+      plt.text(X - 1.50, Y, '{:.2f}kN'.format(FX/1000), va='bottom')
+   if FX < 0:
+      plt.arrow(X + 1.50, Y, -1, 0, color='red', width=0.05)
+      plt.text(X + 1.50, Y, '{:.2f}kN'.format(FX/1000), va='bottom')
+   if FY > 0:
+      plt.arrow(X, Y - 1.50, 0, 1, color='red', width=0.05)
+      plt.text(X, Y - 1.50, '{:.2f}kN'.format(FY/1000), va='bottom', rotation=90)
+   if FY < 0:
+      plt.arrow(X, Y + 1.50, 0, -1, color='red', width=0.05)
+      plt.text(X, Y + 1.50, '{:.2f}kN'.format(FY/1000), va='bottom', rotation=90)       
+
+#Após todo o pediodo de entrada de informações pelo usuário, exibe o grafico
 plt.show()
+
