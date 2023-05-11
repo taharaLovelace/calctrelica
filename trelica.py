@@ -26,17 +26,53 @@ inicio=input("                                                                  
 os.system('cls')
 
 # ENTRADA DAS COORDENADAS DOS NÓS E FORÇAS APLICADAS EXTERNAS NA TRELIÇA
-n = int(input('Quantos nós a trelica terá?: '))
+while True: # validação entrada de quantos nós
+    entrada = input('Quantos nós a trelica terá?: ')
+    if entrada.isdigit():
+        n = int(entrada)
+        break
+    else:
+        print("Entrada inválida. Tente novamente.")
+
+print("\n")
 
 for i in range(n):
-  x = int(input('Insira a Coordenada X do Nó: '))
-  coordenadax.append(x)
-  y = int(input('Insira a Coordenada Y do Nó: '))
-  coordenaday.append(y)
-  fx = int(input('Insira a forca aplicada em FX neste Nó: '))
-  forcax.append(fx)
-  fy = int(input('Insira a forca aplicada em FY neste Nó: '))
-  forcay.append(fy)
+   while True: # validação da entrada para coordenada x
+     entrada = input('Insira a Coordenada X do Nó: ')
+     if entrada.isdigit():
+        x = int(entrada)
+        coordenadax.append(x)
+        break
+     else:
+        print("Entrada inválida. Tente novamente.")
+
+   while True: # validação da entrada para coordenada y
+     entrada = input('Insira a Coordenada Y do Nó: ')
+     if entrada.isdigit():
+        y = int(entrada)
+        coordenaday.append(y)
+        break
+     else:
+        print("Entrada inválida. Tente novamente.") 
+
+   while True:
+     entrada = input('Insira a forca aplicada em FX neste Nó: ')
+     if entrada.isdigit():
+         fx = int(entrada)
+         forcax.append(fx)
+         break
+     else:
+        print("Entrada inválida. Tente novamente.")
+
+   while True:
+     entrada = input('Insira a forca aplicada em FY neste Nó: ')
+     if entrada.isdigit():
+         fy = int(entrada)
+         forcay.append(fy)
+         break
+     else:
+        print("Entrada inválida. Tente novamente.")   
+
 
 tabelanos = pd.DataFrame({'X': coordenadax, 'Y': coordenaday, 'FX': forcax, 'FY': forcay})
 tabelanos.index += 1
