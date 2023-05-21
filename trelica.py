@@ -10,6 +10,8 @@ coordenadax = []
 coordenaday = []
 forcax = []
 forcay = []
+reacaox = []
+reacaoy = []
 barra1 = []
 barra2 = []
 Ls = []
@@ -57,7 +59,7 @@ for i in range(n):
 
    while True:
      entrada = input('Insira a forca aplicada em FX neste Nó: ')
-     if entrada.isdigit():
+     if entrada.lstrip("-").isdigit():
          fx = int(entrada)
          forcax.append(fx)
          break
@@ -66,12 +68,13 @@ for i in range(n):
 
    while True:
      entrada = input('Insira a forca aplicada em FY neste Nó: ')
-     if entrada.isdigit():
+     if entrada.lstrip("-").isdigit():
          fy = int(entrada)
          forcay.append(fy)
          break
      else:
         print("Entrada inválida. Tente novamente.")   
+
 
 
 tabelanos = pd.DataFrame({'X': coordenadax, 'Y': coordenaday, 'FX': forcax, 'FY': forcay})
