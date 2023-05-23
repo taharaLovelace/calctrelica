@@ -29,7 +29,6 @@ os.system('cls')
 
 
 
-# ENTRADA DAS COORDENADAS DOS NÓS E FORÇAS APLICADAS EXTERNAS NA TRELIÇA
 while True: # validação entrada de quantos nós
     entrada = input('Quantos nós a trelica terá?: ')
     if entrada.isdigit():
@@ -40,45 +39,46 @@ while True: # validação entrada de quantos nós
 print("\n")
 
 
-
+# ENTRADA DAS COORDENADAS DOS NÓS E FORÇAS APLICADAS EXTERNAS NA TRELIÇA
 for i in range(n):
-   while True: # validação da entrada para coordenada x
+    while True:
         entrada = input('Insira a Coordenada X do Nó [{}]: '.format(i + 1))
-        if entrada.isdigit():
-            x = int(entrada)
+        try:
+            x = float(entrada)
             coordenadax.append(x)
             break
-        else:
+        except ValueError:
             print("Entrada inválida. Tente novamente.")
 
-   while True: # validação da entrada para coordenada y
+    while True:
         entrada = input('Insira a Coordenada Y do Nó [{}]: '.format(i + 1))
-        if entrada.isdigit():
-            y = int(entrada)
+        try:
+            y = float(entrada)
             coordenaday.append(y)
             break
-        else:
+        except ValueError:
             print("Entrada inválida. Tente novamente.")
 
-   while True:
+    while True:
         entrada = input('Insira a força aplicada em FX neste Nó [{}]: '.format(i + 1))
-        if entrada.lstrip("-").isdigit():
-            fx = int(entrada)
+        try:
+            fx = float(entrada)
             forcax.append(fx)
             break
-        else:
+        except ValueError:
             print("Entrada inválida. Tente novamente.")
 
-   while True:
+    while True:
         entrada = input('Insira a força aplicada em FY neste Nó [{}]: '.format(i + 1))
-        if entrada.lstrip("-").isdigit():
-            fy = int(entrada)
+        try:
+            fy = float(entrada)
             forcay.append(fy)
             break
-        else:
+        except ValueError:
             print("Entrada inválida. Tente novamente.")
 
-   while True:
+
+    while True:
         entrada = input('Insira a reação de apoio em X para o Nó [{}] (1 para rolete, 0 para nenhuma): '.format(i + 1))
         if entrada.isdigit():
             reacao_x = int(entrada)
@@ -86,7 +86,7 @@ for i in range(n):
         else:
             print("Entrada inválida. Tente novamente.")
 
-   while True:
+    while True:
         entrada = input('Insira a reação de apoio em Y para o Nó [{}] (1 para rolete, 0 para nenhuma): '.format(i + 1))
         if entrada.isdigit():
             reacao_y = int(entrada)
@@ -94,9 +94,9 @@ for i in range(n):
         else:
             print("Entrada inválida. Tente novamente.")
 
-   reacaox.append(reacao_x)
-   reacaoy.append(reacao_y)
-   print("\n") 
+    reacaox.append(reacao_x)
+    reacaoy.append(reacao_y)
+    print("\n") 
 
 
 
@@ -111,7 +111,7 @@ print(tabelanos, "\n")
 # ENTRADA DAS BARRAS DA TRELIÇA (QUAIS NÓS SE LIGAM ENTRE SI)
 print('Quais nós estarão interligados entre si? ')
 continuar = True
-# simulando um do-while
+# simulando um do-while -> com critério de parada sendo algo diferente de 's'.
 while continuar:
     x1 = int(input('Insira o Primeiro Nó a ser ligado: '))
     barra1.append(x1)
@@ -196,9 +196,10 @@ tabelabarras['cos'] = coss
 print("\nInformações das barras da treliça:")
 print(tabelabarras, "\n") 
 
+
+
 # Após todo o pediodo de entrada de informações pelo usuário, exibe o grafico
 plt.figure(1, figsize=(12, 4.5))               # Criando a figura e definindo seu número e tamanho em X e Y
-plt.xlim(0,150) ; plt.ylim(-3,150)             # Definindo os limites de cada eixo
 plt.grid(True)                              # Plotando a grade
 plt.title('Cálculo Estrutural de Treliças')
 plt.show()
