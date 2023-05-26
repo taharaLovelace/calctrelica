@@ -75,22 +75,23 @@ for i in range(n):
             break
         except ValueError:
             print("Entrada inválida. Tente novamente.")
-
+    
     while True:
-        entrada = input('Insira a reação de apoio em X para o Nó [{}] (1 para rolete, 0 para nenhuma): '.format(i + 1))
-        if entrada.isdigit():
-            reacao_x = int(entrada)
+        entrada = input("Insira a reação de apoio para o Nó [{}]. Digite 'rolete' ou 'pino' ou 'nada': ".format(i + 1))
+        if entrada == "rolete":
+            reacao_x = 0
+            reacao_y = 1
+            break
+        elif entrada == "pino":
+            reacao_x = 1
+            reacao_y = 1
+            break
+        elif entrada == "nada":
+            reacao_x = 0
+            reacao_y = 0
             break
         else:
-            print("Entrada inválida. Tente novamente.")
-
-    while True:
-        entrada = input('Insira a reação de apoio em Y para o Nó [{}] (1 para rolete, 0 para nenhuma): '.format(i + 1))
-        if entrada.isdigit():
-            reacao_y = int(entrada)
-            break
-        else:
-            print("Entrada inválida. Tente novamente.")
+            print("Opção inválida. Tente novamente.")
 
     reacaox.append(reacao_x)
     reacaoy.append(reacao_y)
@@ -115,6 +116,7 @@ while continuar:
     resposta = input("Deseja continuar? (S/N): ")
     if resposta.lower() != "s":
         continuar = False
+    print("\n")
 
 tabelabarras = pd.DataFrame({'N1': barra1, 'N2': barra2})
 tabelabarras.index += 1
