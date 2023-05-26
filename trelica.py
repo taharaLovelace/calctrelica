@@ -173,7 +173,7 @@ for barra in tabelabarras.index:
     sens.append(sen)
     coss.append(cos)
     As.append(0.01)             #CARACTERÍSTICAS DAS BARRAS A e E PARA A MONTAGEM DA MATRIZ DE RIGIDEZ
-    Es.append(210000000000)
+    Es.append(210000000000)     # módulo de elasticidade do aço estrutural
 
 
 # Inserindo as novas informações na tabela das barras
@@ -280,6 +280,103 @@ for no in tabelanos.index:
         reacY =R[gl2-1]
         plt.arrow(X, Y - 1.50, 0, 1, color='red', width=0.05)
         plt.text(X, Y + 0.50, '{:.2f}kN'.format(reacY / 1000), va='bottom', rotation=90)
+
+# Determinação dos esforços nas barras
+Esf = []
+
+for barra in tabelabarras.index:
+    N1, N2, L, sen, cos, A, E = tabelabarras.loc[barra]
+    
+    # Matriz de rigidez no sistema local 
+    Kl = E*A/L*np.array([[ 1, 0,-1, 0],
+                         [ 0, 0, 0, 0], 
+                         [-1, 0, 1, 0],
+                         [ 0, 0, 0, 0]])
+
+    # Matriz de rotação
+    Mrot = np.array([[ cos,  sen,    0,   0],
+                     [-sen,  cos,    0,   0],
+                     [    0,   0,  cos, sen],
+                     [    0,   0, -sen, cos]])
+    
+    # Determinação dos gls
+    gl1 = int(2*N1-1)
+    gl2 = int(2*N1)
+    gl3 = int(2*N2-1)
+    gl4 = int(2*N2)
+    
+    # Capturar os deslocamentos
+    Dlg = np.zeros([4])
+    Dlg[0] = D[gl1-1]
+    Dlg[1] = D[gl2-1]
+    Dlg[2] = D[gl3-1]
+    Dlg[3] = D[gl4-1]
+    
+    # Rotaciona Dlg
+    Dl = np.dot(Mrot, Dlg)
+    
+    # Determina esforços no sentido da barra 
+    Fl = np.dot(Kl, Dl)
+    FAx = Fl[2]
+    Esf.append(FAx)
+# Colocando Esf no dataframe de barras
+tabelabarras['Esf'] = Esf
+tabelabarras
+# Colocando deslocamentos nodais em Nós
+Dx = []
+Dy = []
+
+for no in tabelanos.index:
+    gl1 = int(2*no-1)
+    gl2 = int(2*no)
+    
+    Dx.append(D[gl1-1])
+    Dy.append(D[gl2-1])
+
+tabelanos['Dx'] = Dx
+tabelanos['Dy'] = Dy 
+
+tabelanos
+
+# Plotando esforços nas barras
+plt.figure(3, figsize=(12,3))
+plt.title('Esforços axiais em kN')
+
+for barra in tabelabarras.index:
+    N1, N2, Esf, sen, cos = tabelabarras.loc[barra, ['N1', 'N2', 'Esf', 'sen', 'cos']]
+    x1, y1 = tabelanos.loc[N1, ['X', 'Y']]
+    x2, y2 = tabelanos.loc[N2, ['X', 'Y']]
+    
+    if cos != 0:
+        tg = sen/cos
+        ang = np.arctan(tg)
+        ang = 180*ang/np.pi
+    else:
+        ang = 90
+    
+    x = [x1, x2]
+    y = [y1, y2]
+    
+    if Esf == 0:
+        cor = 'k'
+    elif Esf > 0:
+        cor = 'r'
+    else:
+        # Esf < 0
+        cor = 'b'
+    plt.plot(x, y, cor, zorder=-1)
+    
+    plt.text(np.mean(x), np.mean(y),
+             '{:.2f}kN'.format(Esf/1000),
+             rotation=ang,
+             horizontalalignment='center',
+             verticalalignment='center',
+             size = 14,
+             weight ='bold'
+            )
+    
+    # Desenhando rotulas
+    plt.scatter(x, y, s=40, color='black', marker="o", zorder=0) # 6 é restrição vertical e 5 na horizontal
 
 
 # Após todo o pediodo de entrada de informações pelo usuário, exibe o grafico
