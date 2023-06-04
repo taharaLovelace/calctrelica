@@ -1,6 +1,6 @@
 # Programa de Análise de Treliças
 
-![Imagem da Treliça](https://uploaddeimagens.com.br/images/004/484/036/original/imagem_2023-05-26_204021964.png?1685144564)
+![Imagem da Treliça](https://uploaddeimagens.com.br/images/004/493/829/original/Imagem_do_WhatsApp_de_2023-06-04_à%28s%29_15.53.04.jpg?1685906728)
 
 ## Visão Geral
 
