@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import pandas as pd
 import os
 
@@ -19,6 +20,9 @@ sens = []
 coss = []
 Es = []
 As = []
+tração = Line2D([0], [0], color='blue', linewidth=1, linestyle='-', label='Tração')
+compressão = Line2D([0], [0], color='orange', linewidth=1, linestyle='-', label='Compressão')
+
 
 # INICIO DO PROGRAMA
 print("                                                 Seja bem-vindo(a) ao nosso Programa de Cálculo Estrutural.")
@@ -355,42 +359,47 @@ try:
         N1, N2, Esf, sen, cos = tabelabarras.loc[barra, ['N1', 'N2', 'Esf', 'sen', 'cos']]
         x1, y1 = tabelanos.loc[N1, ['X', 'Y']]
         x2, y2 = tabelanos.loc[N2, ['X', 'Y']]
-        
+
         if cos != 0:
-            tg = sen/cos
+            tg = sen / cos
             ang = np.arctan(tg)
-            ang = 180*ang/np.pi
+            ang = 180 * ang / np.pi
         else:
             ang = 90
-        
+
         x = [x1, x2]
         y = [y1, y2]
-        
+
         if Esf == 0:
             cor = 'k'
         elif Esf > 0:
-            cor = 'green'
+            cor = 'blue'
         else:
             # Esf < 0
-            cor = 'red'
+            cor = 'orange'
         plt.plot(x, y, cor, zorder=-1)
-        
+
         plt.text(np.mean(x), np.mean(y),
-                '{:.2f}kN'.format(Esf/1000),
+                '{:.2f}kN'.format(Esf / 1000),
                 rotation=ang,
                 horizontalalignment='center',
                 verticalalignment='center',
-                size = 14,
-                weight ='bold'
-                )
-        
-        # Desenhando rotulas
-        plt.scatter(x, y, s=40, color='grey', marker="o", zorder=0) # 6 é restrição vertical e 5 na horizontal
+                size=14,
+                weight='bold')
+
+        # Desenhando rótulas
+        plt.scatter(x, y, s=40, color='grey', marker="o", zorder=0)  # 6 é restrição vertical e 5 na horizontal
+
+    plt.legend(handles=[tração, compressão])    # adiciona a legenda de tração e compressão na janela 3
+
 
     print("\n\n\n                                                             Presione 'enter' para prosseguir!\n")
     final = input("                                                                             ")
+
+
     # Após a entrada de dados pelo usuário e calculos necessários, exibe os 3 gráficos.
     plt.show()
-except Exception as e:
+
+except Exception as e: # caso a treliça informada não esteja em equilibrio estático, encerra o programa.
     print("Treliça com ausência de equilíbrio estático\n\n\n ")
     os._exit(0)
