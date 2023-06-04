@@ -129,6 +129,7 @@ try:
     # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA COMO O USUARIO DIGITOU
     plt.figure(1, figsize=(12, 4.5))
     plt.title('Treliça idealizada')
+    plt.grid(True)  # Plotando a grade
     for barra in tabelabarras.index:
         N1, N2 = tabelabarras.loc[barra, ['N1', 'N2']]
         x2, y2 = tabelanos.loc[N1, ['X', 'Y']]
@@ -259,7 +260,6 @@ try:
             F[gl2-1] = FY
     D = np.linalg.solve(K2, F)
     R = np.dot(K, D)
-    print(R)
 
     # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA, MOSTRANDO AS FORÇAS DAS REAÇÕES DE APOIO
     plt.figure(2, figsize=(12, 4.5))
@@ -369,10 +369,10 @@ try:
         if Esf == 0:
             cor = 'k'
         elif Esf > 0:
-            cor = 'r'
+            cor = 'green'
         else:
             # Esf < 0
-            cor = 'b'
+            cor = 'red'
         plt.plot(x, y, cor, zorder=-1)
         
         plt.text(np.mean(x), np.mean(y),
@@ -389,11 +389,8 @@ try:
 
     print("\n\n\n                                                             Presione 'enter' para prosseguir!\n")
     final = input("                                                                             ")
-    # Após todo o pediodo de entrada de informações pelo usuário, exibe o grafico
-    plt.figure(1, figsize=(12, 4.5))  # Criando a figura e definindo seu número e tamanho em X e Y
-    plt.grid(True)  # Plotando a grade
-    plt.title('Cálculo Estrutural de Treliças')
+    # Após a entrada de dados pelo usuário e calculos necessários, exibe os 3 gráficos.
     plt.show()
 except Exception as e:
-    print("Treliça com ausência de equilibiro estatico\n\n\n ")
+    print("Treliça com ausência de equilíbrio estático\n\n\n ")
     os._exit(0)
