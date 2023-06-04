@@ -126,8 +126,9 @@ tabelabarras = pd.DataFrame({'N1': barra1, 'N2': barra2})
 tabelabarras.index += 1
 
 try:
-    # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA
+    # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA COMO O USUARIO DIGITOU
     plt.figure(1, figsize=(12, 4.5))
+    plt.title('Treliça idealizada')
     for barra in tabelabarras.index:
         N1, N2 = tabelabarras.loc[barra, ['N1', 'N2']]
         x2, y2 = tabelanos.loc[N1, ['X', 'Y']]
@@ -161,6 +162,7 @@ try:
             plt.arrow(X, Y + 1.50, 0, -1, color='red', width=0.05)
             plt.text(X, Y + 0.50, '{:.2f}kN'.format(FY / 1000), va='bottom', rotation=90)
 
+    # ADICIONANDO NA TABELA DAS BARRAS, VALORES COMO SENO, COSSENO, COMPRIMENTO, AREA E MODULO DE ELASTICIDADE
     for barra in tabelabarras.index:
         N1 = tabelabarras.loc[barra, 'N1']
         N2 = tabelabarras.loc[barra, 'N2']
@@ -259,8 +261,9 @@ try:
     R = np.dot(K, D)
     print(R)
 
-    # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA
+    # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA, MOSTRANDO AS FORÇAS DAS REAÇÕES DE APOIO
     plt.figure(2, figsize=(12, 4.5))
+    plt.title('Forças das reações de apoio')
     for barra in tabelabarras.index:
         N1, N2 = tabelabarras.loc[barra, ['N1', 'N2']]
         x2, y2 = tabelanos.loc[N1, ['X', 'Y']]
@@ -344,9 +347,9 @@ try:
 
     tabelanos
 
-    # Plotando esforços nas barras
+    # PLOTANDO O GRAFICO DE ESFORCOS NAS BARRAS
     plt.figure(3, figsize=(12,3))
-    plt.title('Esforços axiais em kN')
+    plt.title('Esforços nas barras')
 
     for barra in tabelabarras.index:
         N1, N2, Esf, sen, cos = tabelabarras.loc[barra, ['N1', 'N2', 'Esf', 'sen', 'cos']]
@@ -382,7 +385,7 @@ try:
                 )
         
         # Desenhando rotulas
-        plt.scatter(x, y, s=40, color='black', marker="o", zorder=0) # 6 é restrição vertical e 5 na horizontal
+        plt.scatter(x, y, s=40, color='grey', marker="o", zorder=0) # 6 é restrição vertical e 5 na horizontal
 
     print("\n\n\n                                                             Presione 'enter' para prosseguir!\n")
     final = input("                                                                             ")
@@ -392,5 +395,5 @@ try:
     plt.title('Cálculo Estrutural de Treliças')
     plt.show()
 except Exception as e:
-    print("Treliça com ausencia de equilibiro estatico\n\n\n ")
+    print("Treliça com ausência de equilibiro estatico\n\n\n ")
     os._exit(0)
