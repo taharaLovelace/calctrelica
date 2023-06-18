@@ -29,6 +29,7 @@ print("                                                 Seja bem-vindo(a) ao nos
 print(
     "           Para facilitar a execução do programa, imagine o sistema de treliças em forma de coordenadas cartesianas. Os eixos X e Y estão na escala de metros.")
 print("                                                             As forças estão na escala de 'kN'")
+print("                                            Os cálculos consideram as caracteristicas das barras como aço estrutural!")
 print("                                                             Presione 'enter' para prosseguir!\n")
 inicio = input("                                                                             ")
 os.system('cls')
