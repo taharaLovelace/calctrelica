@@ -24,7 +24,7 @@ tração = Line2D([0], [0], color='blue', linewidth=1, linestyle='-', label='Tra
 compressão = Line2D([0], [0], color='orange', linewidth=1, linestyle='-', label='Compressão')
 
 
-# INICIO DO PROGRAMA
+# CABEÇARIO DO PROGRAMA, COM INFORMAÇÕES PARA O USUÁRIO SOBRE A EXECUÇÃO DO PROGRAMA
 print("                                                 Seja bem-vindo(a) ao nosso Programa de Cálculo Estrutural.")
 print(
     "           Para facilitar a execução do programa, imagine o sistema de treliças em forma de coordenadas cartesianas. Os eixos X e Y estão na escala de metros.")
@@ -47,7 +47,7 @@ while True:  # validação entrada de quantos nós
 print("\n")
 
 
-# ENTRADA DAS COORDENADAS DOS NÓS E FORÇAS APLICADAS EXTERNAS NA TRELIÇA
+# ENTRADA DAS COORDENADAS DOS NÓS E FORÇAS APLICADAS EXTERNAS NA TRELIÇA, ALÉM DAS REAÇÕES DE APOIO
 for i in range(n):
     while True:
         entrada = input('Insira a Coordenada X do Nó [{}]: '.format(i + 1))
@@ -126,15 +126,16 @@ while continuar:
     if resposta.lower() != "s":
         continuar = False
     print("\n")
-
+#adicionando as informações dos nós que estão conectados, em uma outra tabela chamada tabela barras
 tabelabarras = pd.DataFrame({'N1': barra1, 'N2': barra2})
 tabelabarras.index += 1
 
+# PROCESSO DE PLOTAGEM DE TODOS OS GRÁFICOS, CÁLCULOS, E ESTRUTURA DA TRELIÇA, QUE CASO NÃO ESTEJA EM EQUILÍBRIO, NÃO EXECUTA E FECHA O PROGRAMA
 try:
     # PLOTAGEM DO GRÁFICO QUE REPRESENTA A TRELIÇA COMO O USUARIO DIGITOU
     plt.figure(1, figsize=(12, 4.5))
     plt.title('Treliça idealizada')
-    plt.grid(True)  # Plotando a grade
+    plt.grid(True)  # grades na janela de visualização
     for barra in tabelabarras.index:
         N1, N2 = tabelabarras.loc[barra, ['N1', 'N2']]
         x2, y2 = tabelanos.loc[N1, ['X', 'Y']]
@@ -150,39 +151,39 @@ try:
 
         plt.scatter(X, Y, s=50, color='grey', marker="o")
 
-        if RX == 1:
+        if RX == 1: # caso tenha reação em x
             plt.scatter(X, Y, 400, marker=5, zorder=-2, color='blue')
-        if RY == 1:
+        if RY == 1: # caso tenha reação em y
             plt.scatter(X, Y, 400, marker=6, zorder=-2, color='blue')
 
-        if FX > 0:
+        if FX > 0: # caso possua força em x maior que 0, cria uma seta para a direita 
             plt.arrow(X - 1.5, Y, 1, 0, color='red', width=0.05)
             plt.text(X - 1.5, Y, '{:.2f}kN'.format(FX / 1000), va='bottom')
-        if FX < 0:
+        if FX < 0: # caso possua força em x menor que 0, cria uma seta para a esquerda
             plt.arrow(X + 1.5, Y, -1, 0, color='red', width=0.05)
             plt.text(X + 0.50, Y, '{:.2f}kN'.format(FX / 1000), va='bottom')
-        if FY > 0:
+        if FY > 0: # caso possua força em y maior que 0, cria uma seta para cima
             plt.arrow(X, Y - 1.50, 0, 1, color='red', width=0.05)
             plt.text(X, Y + 0.50, '{:.2f}kN'.format(FY / 1000), va='bottom', rotation=90)
-        if FY < 0:
+        if FY < 0: # caso possua força em y menor que 0, cria uma seta para baixo
             plt.arrow(X, Y + 1.50, 0, -1, color='red', width=0.05)
             plt.text(X, Y + 0.50, '{:.2f}kN'.format(FY / 1000), va='bottom', rotation=90)
 
-    # ADICIONANDO NA TABELA DAS BARRAS, VALORES COMO SENO, COSSENO, COMPRIMENTO, AREA E MODULO DE ELASTICIDADE
+    # ADICIONANDO NA TABELA DAS BARRAS, VALORES COMO SENO, COSSENO, COMPRIMENTO, AREA E MODULO DE ELASTICIDADE, DADOS UTILIZADOS PARA OS CÁLCULOS ESTRUTURAIS
     for barra in tabelabarras.index:
         N1 = tabelabarras.loc[barra, 'N1']
         N2 = tabelabarras.loc[barra, 'N2']
 
         x1, y1 = tabelanos.loc[N1, ['X', 'Y']]
         x2, y2 = tabelanos.loc[N2, ['X', 'Y']]
-        # O comprimento da barra é dado pelo teorema de Pitagoras
+        # O comprimento da barra é descoberto através do teorema de Pitagoras
         Lx = x2 - x1
         Ly = y2 - y1
         L = np.sqrt(Lx ** 2 + Ly ** 2)
-        # Aplicando a lei do seno e cosseno:
+        # Aplicando-se lei do seno e cosseno:
         sen = Ly / L
         cos = Lx / L
-        # Inserindo nas listas
+        # Inserindo os dados na lista
         Ls.append(L)
         sens.append(sen)
         coss.append(cos)
@@ -201,7 +202,7 @@ try:
     print(tabelabarras, "\n")
 
     # CÁLCULO DAS FORÇAS DA TRELIÇA
-
+        # SEQUÊNCIA DE LINHAS DE CÓDIGO PARA O CÁLCULOS NECESSÁRIOS PARA RESOLVER O PROBLEMA PROPOSTO
     maxgl = 2 * len(tabelanos.index)  # aloca previamente uma matriz de acordo com o numero de nós da treliça
     K = np.zeros([maxgl, maxgl])
 
@@ -388,7 +389,6 @@ try:
                 size=14,
                 weight='bold')
 
-        # Desenhando rótulas
         plt.scatter(x, y, s=40, color='grey', marker="o", zorder=0)  # 6 é restrição vertical e 5 na horizontal
 
     plt.legend(handles=[tração, compressão])    # adiciona a legenda de tração e compressão na janela 3
