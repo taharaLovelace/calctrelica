@@ -88,6 +88,7 @@ for i in range(n):
     while True:
         entrada = input("Insira a reação de apoio para o Nó [{}]. Digite 'rolete' ou 'pino' ou 'nada': ".format(i + 1))
         if entrada == "rolete":
+<<<<<<< HEAD
             verificacao = input("Qual o eixo de direção do rolete? Digite 'x' ou 'y': ")
             if verificacao == "x":
                 reacao_x = 1
@@ -95,6 +96,10 @@ for i in range(n):
             else:
                 reacao_x = 0
                 reacao_y = 1
+=======
+            reacao_x = 0
+            reacao_y = 1
+>>>>>>> 131801681cc8c3dbaa891d5db1a864c815e9a7fc
             break
         elif entrada == "pino":
             reacao_x = 1
