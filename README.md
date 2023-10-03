@@ -27,14 +27,14 @@ O Programa de Análise de Treliças é uma solução em cálculo estrutural que 
 Aqui está um exemplo de como utilizar o programa:
 
 ```python
-# Importe as bibliotecas necessárias pelo terminal
+# Importe as bibliotecas necessárias pelo terminal;
 pip install -r requirements.txt
 
 
-# Execute o código python
+# Execute o código python;
 
-# Forneça os dados da treliça
+# Forneça os dados da treliça;
 
-# Visualize os resultados, após a entrada de dados
+# Visualize os resultados, após a entrada de dados.
 
 
